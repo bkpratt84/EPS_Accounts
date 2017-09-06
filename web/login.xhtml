@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:panel class="login-container" id="main-container" header="Login">
+                    <h:form>
+                        <p:panelGrid id="loginform" styleClass="ui-noborder">
+                            <p:row>
+                                <p:column>UserName:</p:column>
+                                <p:column><p:inputText size="15" id="username" value="#{loginBean.username}" required="true" requiredMessage="Enter a username"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3" style="text-align: center"><p:message for="username"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Password:</p:column>
+                                <p:column><p:password size="15" id="pw" value="#{loginBean.pw}" required="true" requiredMessage="Enter a password"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3" style="text-align: center"><p:message for="pw"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2" style="text-align: right"><p:commandButton value="Login" update="@form" action="#{loginBean.submit()}"/></p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <h:panelGroup id="errors" layout="block">
+                            <h:messages errorClass="msg-error" infoClass="msg-info" globalOnly="true" layout="table" />
+                        </h:panelGroup>
+                    </h:form>
+                   
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

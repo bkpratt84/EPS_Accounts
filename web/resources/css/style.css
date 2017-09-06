@@ -1,0 +1,122 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: Play, sans-serif;
+}
+
+/*#header {
+    background-color: #0099ff;
+    height: 40px;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+#header h1 {
+    margin-top: 0px;
+}*/
+
+.msg-error {
+    color: red;
+}
+
+.msg-info {
+    color: green;
+}
+
+.login-container.ui-panel {
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.ui-panel-titlebar {
+    background-color: #0099ff;
+}
+
+.toolbar {
+    margin: 10px;
+    text-align: center;
+}
+
+.toolbar a {
+    color: #333;
+    text-decoration: none;
+}
+
+.toolbar.ui-toolbar.ui-widget-header {
+    background-image: none;
+    background-color: #0099ff;
+}
+
+.toolbar i {
+    color: #0066cc;
+}
+
+.logout {
+    text-align: center;
+    font-weight: bold;
+    
+}
+
+.toolbar .ui-toolbar-group-left {
+    color: #0066cc; 
+    margin: 5px 0 5px 10px;
+}
+
+.toolbar .ui-toolbar-group-right {
+    color: #0066cc;
+    margin: 5px 5px 5px 0;
+}
+
+.ui-widget {
+    font-family: Play,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.main-container {
+    padding: 10px 20px;
+    position: relative;
+}
+
+.main-container .container-left {
+    float: left;
+    width: 300px;
+    margin-top: 5px;
+    border: 1px #DDD;
+    border-style: none solid none none;
+}
+
+.main-container .container-left i {
+    color: #0099ff;
+}
+
+.main-container .container-center {
+    border: 1px #DDD;
+    border-style: none none none solid;
+    min-height: 200px;
+    margin-left: 300px;
+}
+
+.main-container .ui-panel .ui-panel-content {
+    padding: 0;
+}
+
+.main-container .ui-panel {
+    border: none;
+}
+
+.ui-chkbox-box .ui-icon {
+    background-color: #0099ff;
+}
+
+.ui-state-disabled {
+    opacity: 1 !important;
+}
+
+.ui-growl {
+    top: 80px;
+}

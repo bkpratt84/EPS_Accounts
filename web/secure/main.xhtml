@@ -1,0 +1,178 @@
+<ui:composition template="/template/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:define name="content">
+        <div class="main-container">
+            <div class="container-left">
+                <p:panelGrid columns="1" styleClass="ui-noborder">
+                    <h:form id="search">
+                        <p:panel>
+                            <p:selectOneMenu id="selectType" value="#{userSearchView.type}" style="width: 190px;">
+                                <f:selectItem itemLabel="User" itemValue="user"/>   
+                                <f:selectItem itemLabel="Person" itemValue="person"/>
+                            </p:selectOneMenu>
+                        </p:panel>
+                        
+                        <p:panel>
+                            <p:inputText id="username" placeholder="Search" value="#{userSearchView.search}"/>
+                            <p:commandLink id="submit" update=":fromResults @form :reset"  action="#{userSearchView.init()}" style="text-decoration: none; padding: 5px;"
+                                           onstart="PF('bui').block()" oncomplete="PF('bui').unblock()">
+                                <i class="fa fa-search fa-lg"></i>
+                            </p:commandLink>
+                            <p:defaultCommand target="submit"/>
+                        </p:panel>
+                    </h:form>
+                    
+                    <pe:blockUI id="block" target="fromResults:dt_search" widgetVar="bui">
+                        <h:panelGrid columns="2" styleClass="ui-noborder" style="border: 0px none white;">
+                            <p:graphicImage library="images" name="loading.gif" style="margin-right: 12px; vertical-align: middle;"/>
+                            <p:outputLabel value="Loading..." style="font-size: 16px;"/>
+                        </h:panelGrid>
+                    </pe:blockUI>
+                    
+                    <p:panel>
+                        <h:form id="fromResults">
+                            <p:dataTable id="dt_search" var="user" value="#{userSearchView.searchUsers}"
+                                         style="width: 260px; font-size: 10px;"
+                                         scrollable="true" scrollHeight="600" emptyMessage="No Results"
+                                         selectionMode="single" selection="#{userSearchView.selUser}" rowKey="#{user.personID}">
+                                
+                                <p:ajax event="rowSelect" update=":reset" listener="#{userSearchView.searchUser()}" />
+                                
+                                <f:facet name="header">
+                                    Results: #{userSearchView.resultCount}
+                                </f:facet>
+                                <p:column headerText="Person">
+                                    <h:outputText value="#{user.fullName}"/>
+                                </p:column>
+                                <p:column headerText="Username">
+                                    <h:outputText value="#{user.username}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </p:panel>
+                </p:panelGrid>
+            </div>
+            
+            
+            <div class="container-center">
+                <h:form id="reset">
+                    <p:panelGrid id="data" styleClass="ui-noborder">
+                        <p:row>
+                            <p:column>
+                                <p:panel rendered="#{not empty userSearchView.user}" id="demo" header="Demographics"
+                                         style="float: left; margin-right: 20px; border: 1px #DDD solid;">
+                                    <p:panelGrid rendered="#{not empty userSearchView.user}" columns="1" styleClass="ui-noborder" style="font-size: 14px;">
+                                        <p:outputLabel value="Person: #{userSearchView.user.fullName}"/>
+                                        <p:outputLabel value="Person ID: #{userSearchView.user.personID}"/>
+                                        <p:outputLabel value="Student Number: #{userSearchView.user.stdNumber}"/>
+                                    </p:panelGrid>
+
+                                    <p:panelGrid styleClass="ui-noborder" style="font-size: 14px">
+                                        <p:row>
+                                            <p:column colspan="3" ><p:outputLabel value="Email: #{userSearchView.user.email}"/></p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column><p:outputLabel value="Home: #{userSearchView.user.home}"/></p:column>
+                                            <p:column><p:outputLabel value="Cell: #{userSearchView.user.cell}"/></p:column>
+                                            <p:column><p:outputLabel value="Work: #{userSearchView.user.work}"/></p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <!--<h:form id="reset">-->
+                                    <p:growl id="growl" life="5000" />
+
+                                    <p:panel rendered="#{not empty userSearchView.user}" id="account" header="User Account"
+                                             style="float: left; margin-right: 20px; border: 1px #DDD solid;">
+                                        <p:panelGrid rendered="#{not empty userSearchView.user}" styleClass="ui-noborder" style="font-size: 14px;">
+                                            <p:row>
+                                                <p:column><p:outputLabel value="Username: #{userSearchView.user.username}"/></p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column><p:outputLabel value="Security Email: #{userSearchView.user.secEmail}"/></p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column><p:outputLabel value="Expires Date: #{userSearchView.user.expiresDate}"/></p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="Disabled:"/>
+                                                    <p:selectBooleanCheckbox value="#{userSearchView.user.disable}" disabled="true" styleClass="" style="padding-left: 10px;"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="Force Password Reset:"/>
+                                                    <p:selectBooleanCheckbox value="#{userSearchView.user.forcePasswordChange}" disabled="true" styleClass="" style="padding-left: 10px;"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="Preferences Set:"/>
+                                                    <p:selectBooleanCheckbox value="#{userSearchView.user.pwResetPref}" disabled="true" styleClass="" style="padding-left: 10px;"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="text-align: center">
+                                                    <p:inputText id="newpw" placeholder="New password" value="#{userSearchView.pw}" style="margin-right: 10px;"/>
+                                                    <p:commandButton value="Reset Password" style="font-weight: bold" update="growl @form" action="#{userSearchView.resetPW()}">
+                                                        <p:confirm header="Confirmation" message="Are you sure you want to reset the password?" icon="ui-icon-alert"/>
+                                                    </p:commandButton>
+
+                                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="cd">
+                                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                    </p:confirmDialog>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:panel>
+                                <!--</h:form>-->
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:panel rendered="#{not empty userSearchView.user}" id="loginhistory" header="Login History"
+                                         style="float: left; border: 1px #DDD solid;">
+                                    <p:dataTable var="item" value="#{userSearchView.hist}" style="max-width: 600px; text-align: center; font-size: 14px;"
+                                                 rows="10"
+                                                 paginator="true"
+                                                 paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10, 25, 50">
+                                        <p:column headerText="Access Time" style="width: 160px;">
+                                            <h:outputText value="#{item.accessTime}">
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Fail Count" style="width: 60px;">
+                                            <h:outputText value="#{item.failCount}"/>
+                                        </p:column>
+                                        <p:column headerText="Success" style="width: 40px;">
+                                            <h:outputText value="#{item.success}"/>
+                                        </p:column>
+                                        <p:column headerText="Browser Type" style="width: 90px;">
+                                            <h:outputText value="#{item.browserType}"/>
+                                        </p:column>
+                                        <p:column headerText="Third Party" style="width: 120px;">
+                                            <h:outputText value="#{item.thirdParty}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel rendered="#{empty userSearchView.user}" value="#{resultsMessageBean.message}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
